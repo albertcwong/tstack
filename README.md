@@ -1,9 +1,10 @@
 # tstack
 
 The agent skills I use every day, cleaned up so anyone can use them. They work
-in Claude Code and Codex. Some use [T3 Code](https://github.com/pingdotgg/t3code)
-features when they are available and fall back to native tools when they are
-not.
+in Claude Code, Codex, and [pi](https://github.com/badlogic/pi-mono). Skills
+that need other models (`council`, `sol-loop`) call the other CLIs headless
+(`claude -p`, `codex exec`, `pi -p`), so they behave the same from any of the
+three.
 
 ## Skills
 
@@ -32,15 +33,17 @@ Some skills call others. Install the ones they need too:
 git clone https://github.com/t3dotgg/tstack
 cp -R tstack/skills/* ~/.claude/skills/   # Claude Code
 cp -R tstack/skills/* ~/.codex/skills/    # Codex
+cp -R tstack/skills/* ~/.pi/agent/skills/ # pi
 ```
 
 ## Requirements
 
 - An authenticated [GitHub CLI](https://cli.github.com) (`gh`).
 - `python3` for `babysit-pr`'s `pr-wait` script.
-- `council` and `sol-loop` need subagents on other providers' models. T3 Code
-  does this with `delegate_task`. Otherwise you need a harness that can run
-  those models.
+- `council` and `sol-loop` need other providers' models. Install and sign in
+  to `claude`, `codex`, and `pi` (with a provider for Gemini or your third
+  council member). `pi --list-models <search>` shows which model IDs you can
+  reach.
 
 ## Make them yours
 

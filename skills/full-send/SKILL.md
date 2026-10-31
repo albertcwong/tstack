@@ -58,9 +58,8 @@ one appears.
 
 Stay active from step 1 to step 7. If you end your turn while checks or bots are
 pending, the work stops, because nobody will prompt you again. Wait with the
-watcher from `babysit-pr`, so something wakes you when the PR changes. In T3
-Code that is `watch_pull_request`. If you stop before the merge, call
-`unwatch_pull_request` first.
+`pr-wait` watcher from `babysit-pr`, so something wakes you when the PR
+changes. If you stop before the merge, stop the `pr-wait` you started first.
 
 ## Proof
 

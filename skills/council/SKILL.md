@@ -16,10 +16,32 @@ high reasoning effort. If the user's instructions name council members, use
 those. Otherwise pick the latest flagship model from each provider, for
 example Claude Opus, GPT Sol, and Gemini Pro.
 
-In T3 Code, use `orchestrator_capabilities` to resolve the models, then
-`delegate_task` to start one delegate per model in parallel. Elsewhere, use
-the harness's subagent tools. If you cannot reach three providers, or a named
-member is unavailable, report it instead of substituting.
+Start the delegates through the headless CLIs, so this works the same from
+Claude Code, Codex, or pi:
+
+| Member | Command |
+| --- | --- |
+| Claude | `claude -p --model <id> --effort high --permission-mode plan --output-format json "<brief>"` |
+| GPT | `codex exec -m <id> -c model_reasoning_effort=high -s read-only -C <repo> --json -o <out-file> "<brief>" </dev/null` |
+| Any other (e.g. Gemini) | `pi -p --model <provider/id>:high --exclude-tools edit,write --session-id <uuid> "<brief>"` |
+
+- Resolve model IDs at run time: `pi --list-models <search>` lists what each
+  provider exposes. Do not hardcode IDs.
+- Run the three in parallel: one shell command that starts each in the
+  background with output to its own file under a temp dir, then `wait`. In
+  Claude Code, Bash `run_in_background` works too. Give the call a long
+  timeout.
+- Save each session ID for later rounds: `session_id` from Claude's JSON,
+  `thread_id` from Codex's `thread.started` event, and the `--session-id` you
+  chose for pi. Follow up with `claude -p --resume <id>`,
+  `codex exec resume <id>`, or `pi -p --session-id <id>`.
+- For your own provider you may use the harness's native subagent instead.
+- Redirect stdin from `/dev/null` for `codex exec`, or it waits for input.
+- Delegates get no history. Put the repo path, base, diff command, and intent
+  in the brief.
+
+If you cannot reach three providers, or a named member is unavailable, report
+it instead of substituting.
 
 Give each delegate the request and relevant context. For review or feedback,
 keep their work read-only. Collect their responses and summarize the useful
