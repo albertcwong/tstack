@@ -46,7 +46,7 @@ missing or pre-failing checks in the brief.
 ## 2. Start Sol
 
 Run Sol headless through Codex. This works the same from Claude Code, Codex,
-or pi:
+pi, or Cursor's `agent`:
 
 ```bash
 codex exec -m <sol-id> -c model_reasoning_effort=high -s read-only -C <repo> \

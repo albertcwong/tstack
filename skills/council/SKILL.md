@@ -17,26 +17,34 @@ those. Otherwise pick the latest flagship model from each provider, for
 example Claude Opus, GPT Sol, and Gemini Pro.
 
 Start the delegates through the headless CLIs, so this works the same from
-Claude Code, Codex, or pi:
+Claude Code, Codex, pi, or Cursor's `agent`:
 
 | Member | Command |
 | --- | --- |
 | Claude | `claude -p --model <id> --effort high --permission-mode plan --output-format json "<brief>"` |
 | GPT | `codex exec -m <id> -c model_reasoning_effort=high -s read-only -C <repo> --json -o <out-file> "<brief>" </dev/null` |
+| Grok | `agent -p --model <id> --mode plan --trust --workspace <repo> --output-format json "<brief>" </dev/null` |
 | Any other (e.g. Gemini) | `pi -p --model <provider/id>:high --exclude-tools edit,write --session-id <uuid> "<brief>"` |
 
 - Resolve model IDs at run time: `pi --list-models <search>` lists what each
-  provider exposes. Do not hardcode IDs.
+  provider exposes, and `agent --list-models` lists Cursor's. That list can
+  lag the TUI: a newer bare ID such as `grok-<version>` may work with
+  `--model` before it shows up, so try it before you fall back to an older
+  listed one. Bare IDs may not accept an `[effort=...]` override; if so, run
+  them at their default effort and say so. Do not hardcode IDs.
 - Run the three in parallel: one shell command that starts each in the
   background with output to its own file under a temp dir, then `wait`. In
   Claude Code, Bash `run_in_background` works too. Give the call a long
   timeout.
 - Save each session ID for later rounds: `session_id` from Claude's JSON,
-  `thread_id` from Codex's `thread.started` event, and the `--session-id` you
-  chose for pi. Follow up with `claude -p --resume <id>`,
-  `codex exec resume <id>`, or `pi -p --session-id <id>`.
+  `thread_id` from Codex's `thread.started` event, `session_id` from
+  `agent`'s JSON, and the `--session-id` you chose for pi. Follow up with
+  `claude -p --resume <id>`, `codex exec resume <id>`,
+  `agent -p --resume <id>`, or `pi -p --session-id <id>`.
 - For your own provider you may use the harness's native subagent instead.
-- Redirect stdin from `/dev/null` for `codex exec`, or it waits for input.
+- Redirect stdin from `/dev/null` for `codex exec` and `agent -p`, or they
+  wait for input. Never pass `--force`/`--yolo` to `agent`; `--mode plan`
+  keeps it read-only.
 - Delegates get no history. Put the repo path, base, diff command, and intent
   in the brief.
 

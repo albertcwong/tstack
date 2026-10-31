@@ -15,7 +15,7 @@ per PR. Every watcher on a GitHub account shares one rate limit.
 
 - **Only the agent that owns the PR watches it.** If you are a delegated
   reviewer (a council member, a Sol round, any headless `claude -p`,
-  `codex exec`, or `pi -p` child), never start `pr-wait`. The parent owns the
+  `codex exec`, `pi -p`, or `agent -p` child), never start `pr-wait`. The parent owns the
   PR. Do not watch PRs you are not working on.
 - **An event is news, not a merge decision.** Check the merge gate yourself.
 - **"GitHub stayed unreachable"** usually means GitHub's rate limit is used
@@ -47,7 +47,7 @@ How to run it depends on the harness:
 - **Claude Code:** run it with the Monitor tool (`timeout_ms: 3600000`), so
   each line wakes you. If Monitor is not available, run it with Bash
   `run_in_background`; you are re-invoked when it exits.
-- **Codex and pi:** run it as one long foreground command (`--until any-change`
+- **Codex, pi, and Cursor `agent`:** run it as one long foreground command (`--until any-change`
   if you want to react to each event, then start it again). It ends on its own.
   Give the shell call a long timeout so the harness does not kill it.
 

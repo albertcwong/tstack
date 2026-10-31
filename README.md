@@ -1,10 +1,10 @@
 # tstack
 
 The agent skills I use every day, cleaned up so anyone can use them. They work
-in Claude Code, Codex, and [pi](https://github.com/badlogic/pi-mono). Skills
-that need other models (`council`, `sol-loop`) call the other CLIs headless
-(`claude -p`, `codex exec`, `pi -p`), so they behave the same from any of the
-three.
+in Claude Code, Codex, [pi](https://github.com/badlogic/pi-mono), and
+[Cursor's `agent` CLI](https://cursor.com/cli). Skills that need other models
+(`council`, `sol-loop`) call the other CLIs headless (`claude -p`,
+`codex exec`, `pi -p`, `agent -p`), so they behave the same from any of them.
 
 ## Skills
 
@@ -34,6 +34,7 @@ git clone https://github.com/t3dotgg/tstack
 cp -R tstack/skills/* ~/.claude/skills/   # Claude Code
 cp -R tstack/skills/* ~/.codex/skills/    # Codex
 cp -R tstack/skills/* ~/.pi/agent/skills/ # pi
+cp -R tstack/skills/* ~/.cursor/skills/   # Cursor agent
 ```
 
 ## Requirements
@@ -42,8 +43,8 @@ cp -R tstack/skills/* ~/.pi/agent/skills/ # pi
 - `python3` for `babysit-pr`'s `pr-wait` script.
 - `council` and `sol-loop` need other providers' models. Install and sign in
   to `claude`, `codex`, and `pi` (with a provider for Gemini or your third
-  council member). `pi --list-models <search>` shows which model IDs you can
-  reach.
+  council member), or `agent` for Grok. `pi --list-models <search>` and
+  `agent --list-models` show which model IDs you can reach.
 
 ## Make them yours
 
